@@ -20,9 +20,9 @@ const loadProducts= () =>{
                   </a>
                 </div>
                 <div class="card-body p-3">
-                  <p class="mb-0 text-sm">${type}</p>
+                  <p class="mb-0 text-sm tipo">${type}</p>
                   <a href="javascript:;">
-                    <h5>
+                    <h5 class="nombre">
                       ${name}
                     </h5>
                   </a>
@@ -46,15 +46,11 @@ const loadProducts= () =>{
     .then(response => response.text())
     .then(result => {
         let xml = (new DOMParser()).parseFromString(result, 'application/xml');
-        console.log(xml)
         let nombres= xml.getElementsByTagName("name")
         let precios= xml.getElementsByTagName("price")
         let sources= xml.getElementsByTagName("src")
         let types= xml.getElementsByTagName("type")
         let productos= xml.getElementsByTagName("product")
-        console.log("CANTIDAD PRODCUTOS: " ,productos.length)
-        let type= types[0]
-        console.log(type.innerHTML)
         for(let i = 0 ; i <productos.length; i++){
             let src= sources[i].innerHTML
             let name= nombres[i].innerHTML
@@ -62,7 +58,7 @@ const loadProducts= () =>{
             let price= precios[i].innerHTML
             document.getElementsByClassName("productos")[0].innerHTML+= 
             `
-            <div class="col-xl-3 col-md-6 mb-xl-0 mb-4 mt-4">
+            <div class="col-xl-3 col-md-6 mb-xl-0 mb-4 mt-4 producto">
               <div class="card card-blog card-plain">
                 <div class="card-header p-0 mt-n4 mx-3">
                   <a class="d-block shadow-xl border-radius-xl">
@@ -70,9 +66,9 @@ const loadProducts= () =>{
                   </a>
                 </div>
                 <div class="card-body p-3">
-                  <p class="mb-0 text-sm">${type}</p>
+                  <p class="mb-0 text-sm tipo">${type}</p>
                   <a href="javascript:;">
-                    <h5>
+                    <h5 class="nombre">
                       ${name}
                     </h5>
                   </a>
@@ -90,4 +86,27 @@ const loadProducts= () =>{
     .catch(error => console.log(error))
 }
 
+
+const cargar= () =>{
+    let boton= document.getElementById("filter")
+    boton.addEventListener('click', event =>{
+        let texto= document.getElementById("text")
+        let valor= texto.value
+        console.log(valor)
+        let productos= document.getElementsByClassName("producto")
+        let nombreProducto= document.getElementsByClassName("nombre")
+        for(let i =0 ; i<nombreProducto.length ; i++){
+            console.log(nombreProducto[i].innerHTML)
+            if(nombreProducto[i].innerHTML !== valor){
+                let esconder= productos[i]
+                esconder.setAttribute("style", "visibility:hidden;");
+            }
+        }
+
+
+    })
+}
+
 loadProducts()
+
+cargar()
